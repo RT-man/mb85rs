@@ -214,7 +214,7 @@ static ssize_t mb85rs_bin_write(struct file *filp, struct kobject *kobj,
 	return mb85rs_fram_write(mb85rs, buf, off, count);
 }
 
-static u32 mb85rs_set_block_protect(struct spi_device *spi, int bp)
+static int mb85rs_set_block_protect(struct spi_device *spi, u8 bp)
 {
 	int err;
 	u8 status_reg = 0;
@@ -250,7 +250,7 @@ static u32 mb85rs_set_block_protect(struct spi_device *spi, int bp)
 	return err;
 }
 
-static int mb85rs_get_blk_protect(struct spi_device *spi)
+static u8 mb85rs_get_blk_protect(struct spi_device *spi)
 {
 	int err;
 	u8 status_reg = 0;
@@ -289,7 +289,7 @@ static int mb85rs_probe(struct spi_device *spi)
 	int err;
 	u8 mid, pid1, pid2;
 	int wp_gpio;
-	int bp;
+	u8 bp;
 
 	if (!spi->dev.platform_data) {
 		dev_err(&spi->dev, "need the platform data(wp gpio)\n");
